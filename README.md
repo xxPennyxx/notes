@@ -112,6 +112,7 @@ useEffect(()=>{
   ```
 
   is called on every rerender.
+
 3. Variation 3: Using a particular state variable as the second argument of useEffect()
 
 ```
@@ -121,6 +122,7 @@ useEffect(()=>{
   ```
 
   is called everytime the state of counterOne is changed.
+  
 4. Variation 4: Combining the state variables as the second argument of useEffect()
 
  ``` 
