@@ -82,7 +82,8 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
-  },```
+  },
+  ```
 
 - Run the server in another w indow/tab using the command `npm run server`.
 Resources should run at http://localhost:3001/notes and the home route is http://localhost:3001
@@ -92,29 +93,42 @@ Resources should run at http://localhost:3001/notes and the home route is http:/
 - Have a play around with the api.http file and make some requests.
 
 #### PRO TIP:
-
--  ```useEffect(()=>{
+1. Variation 1: Using an empty array as the second argument of useEffect()
+ ``` 
+ useEffect(()=>{
     console.log("Called only once")
-  },[]);```
+  },[]);  
+  ```
 
   calls the function once and never again.
+  
+  2. Variation 2: Omitting the second argument of useEffect()
 
--  ```useEffect(()=>{
+
+ ```
+useEffect(()=>{
     console.log("Called on every rerender")
-  });```
+  });
+  ```
 
   is called on every rerender.
+3. Variation 3: Using a particular state variable as the second argument of useEffect()
 
--  ```useEffect(()=>{
+```
+useEffect(()=>{
     console.log("Counter One changed")
-  },[counterOne]);```
+  },[counterOne]);
+  ```
 
   is called everytime the state of counterOne is changed.
+4. Variation 4: Combining the state variables as the second argument of useEffect()
 
-  -  ```useEffect(()=>{
+ ``` 
+useEffect(()=>{
     console.log("Counter One or Counter Two changed")
-  },[counterOne,counterTwo]);```
+  },[counterOne,counterTwo]);
+  ```
 
-  is called everytime the state of counterOne is changed.
+  is called everytime the state of counterOne or counterTwo is changed.
 
   References: https://codepen.io/sgrider/pen/BarEowz
