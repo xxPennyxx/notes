@@ -1,0 +1,29 @@
+GET http://localhost:3001/notes HTTP/1.1
+Content-Type: application/json
+
+###
+
+POST http://localhost:3001/notes HTTP/1.1
+Content-Type: application/json
+
+{
+    "id":"2",
+    "title":"Jake Weatherald",
+    "content":"Jake Beath Weatherald (born 4 November 1994) is an Australian cricketer who plays for Tasmania and Adelaide Strikers."
+}
+
+### 
+
+PUT http://localhost:3001/notes/2 HTTP/1.1
+Content-Type: application/json
+
+{
+    "id":"2",
+    "title":"Jake Weatherald",
+    "content":"Jake Beath Weatherald (born 4 November 1994) is an Australian cricketer who plays for Tasmania and Adelaide Strikers. He played for South Australia from 2016 to 2023."
+}
+
+###
+
+DELETE  http://localhost:3001/notes/2 HTTP/1.1
+Content-Type: application/json

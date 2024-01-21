@@ -68,3 +68,53 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+# Tweaks to part 2 of this project
+
+- Install json-server using the command `npm i json-server`
+- Create a `db.json` file to store data
+- Open `package.json` to create a command to run json server. Ensure the "scripts": looks like this:
+
+ ```"scripts": {
+    "start": "react-scripts start",
+    "server" :"json-server -p 3001 --watch db.json",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },```
+
+- Run the server in another w indow/tab using the command `npm run server`.
+Resources should run at http://localhost:3001/notes and the home route is http://localhost:3001
+
+
+- Install a VS Code extension called REST Client. That will help you make requests to the API from VS Code itself.
+- Have a play around with the api.http file and make some requests.
+
+#### PRO TIP:
+
+-  ```useEffect(()=>{
+    console.log("Called only once")
+  },[]);```
+
+  calls the function once and never again.
+
+-  ```useEffect(()=>{
+    console.log("Called on every rerender")
+  });```
+
+  is called on every rerender.
+
+-  ```useEffect(()=>{
+    console.log("Counter One changed")
+  },[counterOne]);```
+
+  is called everytime the state of counterOne is changed.
+
+  -  ```useEffect(()=>{
+    console.log("Counter One or Counter Two changed")
+  },[counterOne,counterTwo]);```
+
+  is called everytime the state of counterOne is changed.
+
+  References: https://codepen.io/sgrider/pen/BarEowz
