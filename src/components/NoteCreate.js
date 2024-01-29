@@ -1,5 +1,4 @@
-import React, {useState, useContext} from 'react';
-import NotesContext from '../context/notes';
+import React, {useState} from 'react';
 import useNotesContext from '../hooks/use-notes-context';
 function NoteCreate(){
 
