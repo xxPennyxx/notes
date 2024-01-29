@@ -1,21 +1,22 @@
 import React, {useState} from 'react';
 import NoteEdit from './NoteEdit';
+import useNotesContext from '../hooks/use-notes-context';
 
-function NoteShow({note, onDelete, onEdit}){
+function NoteShow({note}){
 
     const [showEdit, setShowEdit]=useState(false);
 
+    const {deleteNoteById}=useNotesContext();
     const handleDeleteClick=()=>{
-        onDelete(note.id);
+        deleteNoteById(note.id);
     }
 
     const handleEditClick=()=>{
         setShowEdit(!showEdit);
     }
 
-    const handleSubmit = (id,newTitle,newContent) => {
+    const handleSubmit = () => {
         setShowEdit(false);
-        onEdit(id,newTitle,newContent);
       };
     let title1= <div><h6 style={{fontSize:'1.25rem', fontWeight:'550'}}> {note.title}</h6> <p>{note.content}</p><br/></div>
     if(showEdit){

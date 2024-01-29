@@ -1,9 +1,12 @@
 import React, {useState}from 'react';
+import useNotesContext from '../hooks/use-notes-context';
 
 function NoteEdit({note, onSubmit}){
 
     const [title, setTitle]=useState(note.title);
     const [content, setContent]=useState(note.content);
+    const {editNoteById}=useNotesContext();
+    
     const handleChangeTitle=(event)=>{
         setTitle(event.target.value);
     };
@@ -14,7 +17,8 @@ function NoteEdit({note, onSubmit}){
 
     const handleSubmit=(event)=>{
         event.preventDefault();
-        onSubmit(note.id,title,content);
+        onSubmit();
+        editNoteById(note.id,title,content)
 
     }
     return <div> 
@@ -25,9 +29,6 @@ function NoteEdit({note, onSubmit}){
             <input className='input' value={content} onChange={handleChangeContent}/>
             <button className='button is-primary' >Save</button>
         </form>
-
-
-
     </div>
 }
 

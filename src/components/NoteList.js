@@ -1,16 +1,14 @@
-import React, {useContext} from 'react';
-import NotesContext from '../context/notes';
 import NoteShow from './NoteShow'
+import useNotesContext from '../hooks/use-notes-context';
 
-function NoteList({notes,onDelete,onEdit}){
+function NoteList(){
 
-    const {count, incrementCount}=useContext(NotesContext);
+    const {notes}=useNotesContext();
     const renderedNotes=notes.map((note)=>{
-        return <NoteShow onEdit={onEdit} onDelete={onDelete} key={note.id} note={note}/>
+        return <NoteShow key={note.id} note={note}/>
     })
     return <div className='book-list'> 
-    {count}
-    <button onClick={incrementCount}>Click me</button>
+    
     {renderedNotes}</div>
 }
 

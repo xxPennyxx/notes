@@ -1,9 +1,11 @@
-import React, {useState} from 'react';
-
-function NoteCreate({onCreate}){
+import React, {useState, useContext} from 'react';
+import NotesContext from '../context/notes';
+import useNotesContext from '../hooks/use-notes-context';
+function NoteCreate(){
 
     const [title, setTitle]=useState('');
     const [content, setContent]=useState('');
+    const {createNote}=useNotesContext();
     const handleChangeTitle=(event)=>{
         setTitle(event.target.value);
 
@@ -15,7 +17,7 @@ function NoteCreate({onCreate}){
 
     const handleSubmit=(event)=>{
         event.preventDefault();
-        onCreate(title,content);
+        createNote(title,content);
         setContent('');
         setTitle('');
     }
