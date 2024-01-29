@@ -85,7 +85,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
   },
   ```
 
-- Run the server in another w indow/tab using the command `npm run server`.
+- Run the server in another window/tab using the command `npm run server`.
 Resources should run at http://localhost:3001/notes and the home route is http://localhost:3001
 
 
