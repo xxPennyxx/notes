@@ -1,4 +1,4 @@
-import React, {createContext, useState} from 'react';
+import React, {createContext, useState, useCallback} from 'react';
 import axios from 'axios';
 
 const NotesContext=createContext();
@@ -7,12 +7,12 @@ function Provider({children}){
 
     const [notes, setNotes]=useState([]);
 
-    //fetch all books from the API
-    const fetchNotes=async()=>{
+    //fetch all notes from the API
+    const fetchNotes=useCallback(async()=>{
         const response=await axios.get('http://localhost:3001/notes');
         setNotes(response.data);
 
-    }
+    },[]);
 
     const editNoteById=async(id,newTitle,newContent)=>{
         const response=await axios.put('http://localhost:3001/notes/'+id,{

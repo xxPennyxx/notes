@@ -1,74 +1,6 @@
-# Getting Started with Create React App
+# Notes App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
+This is a simple notes app which i built using React. There are multiple versions of this app; a basic one without a backend, one with a backend API, and one which makes use of various hooks like useEffect(), useContext() and useCallback().
 
 # Tweaks to part 2 of this project
 
@@ -76,7 +8,8 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 - Create a `db.json` file to store data
 - Open `package.json` to create a command to run json server. Ensure the "scripts": looks like this:
 
- ```"scripts": {
+ ```
+ "scripts": {
     "start": "react-scripts start",
     "server" :"json-server -p 3001 --watch db.json",
     "build": "react-scripts build",
@@ -134,3 +67,132 @@ useEffect(()=>{
   is called everytime the state of counterOne or counterTwo is changed.
 
   References: https://codepen.io/sgrider/pen/BarEowz
+
+# Back to useEffect
+
+Upon every re-render, a new (different) variable with the same name and the correct value gets reassigned in memory.
+
+```
+import { useState, useEffect } from "react";
+
+function App() {
+  const [counter, setCounter] = useState(0);
+
+  useEffect(() => {
+    document.body.onclick = () => {
+      console.log(counter);
+    };
+  }, []);
+
+  return (
+    <div>
+      <button onClick={() => setCounter(counter + 1)}>+ Increment</button>
+      <div>Count: {counter}</div>
+    </div>
+  );
+}
+
+export default App;
+
+```
+Here, the counter variable is getting updated, but 0 is always getting console logged. Thisis because the values of the state variable `counter` and the one that is getting rerendered thanks to the `useEffect` are inconsistent. This is known as **stale variable reference**.
+It is possible anytime your useEffect contains a function referring to a variable.
+
+Even though the following may be a solution:
+
+```
+useEffect(() => {
+    document.body.onclick = () => {
+      console.log(counter);
+    };
+  }, [counter]);
+
+```
+a brand new function is created which refers to the state variable in memory. Don't just blindly follow ESLint's rule because it may lead to bugs.
+
+
+Reference: https://codesandbox.io/s/hungry-fog-0ev1ec
+
+# useCallBack() hook
+A hook that returns the function ou put in the first parameter, it is a reference to the exact same function in the memory.
+
+The behaviour is different after the first render. If second argument is an empty array, it gives you the original function from first render. If the second argument has elements that have changed since last render, useCallback gives you the new version of that function.
+
+#### useEffect tips:
+- Cannot return numbers or strings.
+```
+function App(){
+  useEffect(()=>{
+    return 'Hello'
+  },[])
+}
+```
+- Cannot use async/await
+```
+function App(){
+  useEffect(async()=>{
+    const res=await axios.get(<link>)
+  },[])
+}
+```
+- Can return a function
+
+```
+function App(){
+  useEffect(()=>{
+    return ()=>{
+      console.log("Hi")
+    }
+  },[])
+}
+```
+
+# The purpose behind cleanup functions
+
+Consider this code snippet.
+
+```
+import { useState, useEffect } from "react";
+
+function App() {
+  const [counter, setCounter] = useState(0);
+  useEffect(() => {
+    // document.body.onclick = () => {
+    //   console.log(counter);
+    // };
+
+    const listener = () => {
+      console.log(counter);
+    };
+
+    document.body.addEventListener("click", listener);
+
+    const cleanUp = () => {
+      console.log("Clean up!");
+    };
+    return cleanUp;
+  }, [counter]);
+
+  //Cleanup will only be called if the arrow func (of useEffect) will be called again
+
+  return (
+    <div>
+      <button onClick={() => setCounter(counter + 1)}>+ Increment</button>
+      <div>Count: {counter}</div>
+    </div>
+  );
+}
+
+export default App;
+```
+
+When you click the button, it console logs the values all the way from 0 to the current count value. This is because even the listener function is being recreated with change in state. This is why we need to clean up the last event handler.
+
+Fix:
+
+```
+const cleanUp = () => {
+      console.log("Clean up!");
+      document.body.removeEventListener("click", listener);
+    };
+```
